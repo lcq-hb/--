@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>persist</title></head>
+<body>
+<div id="r">running</div>
+<script>
+(function(){
+  var out;
+  try{
+    var n = parseInt(localStorage.getItem('ft-persist-test') || '0', 10) + 1;
+    localStorage.setItem('ft-persist-test', String(n));
+    var readBack = localStorage.getItem('ft-persist-test');
+    // 再写一条较大的数据，模拟真实用量
+    localStorage.setItem('ft-persist-blob', new Array(2000).join('x'));
+    var blobOk = (localStorage.getItem('ft-persist-blob') || '').length;
+    out = 'COUNT=' + readBack + ' BLOB=' + blobOk + ' ORIGIN=' + location.origin + ' PROTO=' + location.protocol;
+  }catch(e){
+    out = 'ERROR=' + e.name + ':' + e.message;
+  }
+  document.getElementById('r').textContent = out;
+  document.title = out;
+})();
+</script>
+</body></html>
